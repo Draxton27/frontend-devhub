@@ -10,13 +10,6 @@ export default function Home() {
       {session ? (
       <>
         <p>Welcome, {session.user.name}</p>
-        <p>Your role: {session.user.role}</p>
-
-        {/* Show admin panel link only for admins */}
-        {session.user.role === "admin" && (
-            <a href="/admin">Go to Admin Panel</a>
-          )}
-
           <button onClick={() => signOut()}>Sign Out</button>
       </>
       ) : (

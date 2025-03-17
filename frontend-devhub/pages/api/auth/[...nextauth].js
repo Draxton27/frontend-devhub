@@ -43,23 +43,9 @@ export const authOptions = {
         return false;
       }
     },
-    async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.role = token.role; //role from JWT
+    async session({ session }) {
       return session;
     },
-    async jwt({ token, user }) {
-      if(user) {
-        const userRef = doc(db, "users", user.email);
-        const userSnap = await getDoc(userRef);
-  
-        if (userSnap.exists()) {
-          token.role = userSnap.data().role || "user"; // user is default role
-        }
-      }
-      return token;
-    }
-    
   },
 };
 
