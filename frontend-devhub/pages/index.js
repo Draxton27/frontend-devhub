@@ -1,6 +1,7 @@
 import LoginButton from "../components/LoginButton";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 export default function Home() {
   const { data: session } = useSession();
   return (
@@ -13,7 +14,7 @@ export default function Home() {
           <button onClick={() => signOut()}>Sign Out</button>
       </>
       ) : (
-        <a href="/api/auth/signin">Sign In</a>
+        <Link href="/api/auth/signin">Sign In</Link>
       )}
     </div>
   );
