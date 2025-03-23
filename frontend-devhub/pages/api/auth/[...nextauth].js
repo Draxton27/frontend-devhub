@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { signIn } from "next-auth/react";
-import { db, doc, getDoc, setDoc }  from "@/utils/firebase";
+import { db, doc, getDoc, setDoc }  from "../../../utils/firebase";
 import { updateDoc, query, where, collection, getDocs } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 
