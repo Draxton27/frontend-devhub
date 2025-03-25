@@ -23,11 +23,14 @@ export default function AuthForm() {
     try {
       if (mode === 'register') {
         const userCred = await createUserWithEmailAndPassword(auth, data.email, data.password);
+        const idToken = await userCred.user.getIdToken();
+
         const user = userCred.user;
         const userData = {
           id: user.uid,
-          name: user.displayName ?? 'Nuevo usuario',
+          name: user.displayName ?? 'New User',
           email: user.email,
+          password: data.password,
           image: user.photoURL ?? 'https://example.com/default.png',
           role: 'user',
           createdAt: new Date(),
@@ -38,6 +41,7 @@ export default function AuthForm() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${idToken}`,
           },
           body: JSON.stringify(userData),
         });
@@ -48,17 +52,17 @@ export default function AuthForm() {
       const userCred = await signInWithEmailAndPassword(auth, data.email, data.password);
       const idToken = await userCred.user.getIdToken();
   
-      // Obtener perfil desde backend
+      // obtener profile
       const res = await fetch('http://localhost:3001/users/me', {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
+        body: JSON.stringify({ email: data.email, password: data.password }),
       });
   
       const profile = await res.json();
-      console.log('Perfil desde backend:', profile);
+      console.log('Profile:', profile);
   
-      // Aquí podés redirigir a /dashboard más adelante
   
     } catch (error: any) {
       console.error('Auth error:', error.message);

@@ -2,9 +2,9 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { signIn } from "next-auth/react";
-import { db, doc, getDoc, setDoc }  from "../../../utils/firebase";
+import { db, doc, getDoc, setDoc, auth }  from "../../../utils/firebase";
 import { updateDoc, query, where, collection, getDocs } from "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export const authOptions = {
   providers: [
@@ -34,18 +34,28 @@ export const authOptions = {
           userId = existingUser.id; // Asignar el ID existente
           console.log("User already exists:", existingUser.data());
         } else {
+          
           // Create a new user with UUID
-          userId = uuidv4();
-          const userRef = doc(usersCollection, userId);
+          const userCred = await createUserWithEmailAndPassword(auth, user.email, user.email);
+          const userRef = doc(usersCollection, userCred.user.uid);
           await setDoc(userRef, {
-            id: userId,
+            id: userCred.user.uid,
             name: user.name,
             email: user.email,
             image: user.image,
             role: "user",
             createdAt: new Date(),
             lastLogin: new Date(),
-          });
+          });
+
+          // await fetch('http://localhost:3001/users', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //     Authorization: `Bearer ${idToken}`,
+          //   },
+          //   body: JSON.stringify(userData),
+          // });
         }
 
         return true;
