@@ -8,15 +8,15 @@ export default function Home() {
   return (
     <div>
       <h1>Welcome to DevHub</h1>
-      {/* <AuthPage></AuthPage> */}
-      {session ? (
+      <AuthPage></AuthPage>
+      {/* {session ? (
       <>
         <p>Welcome, {session.user.name}</p>
           <button onClick={() => signOut()}>Sign Out</button>
       </>
       ) : (
         <Link href="/api/auth/signin">Sign In</Link>
-      )}
+      )} */}
     </div>
   );
 }

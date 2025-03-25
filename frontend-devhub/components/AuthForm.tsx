@@ -52,9 +52,11 @@ export default function AuthForm() {
       const userCred = await signInWithEmailAndPassword(auth, data.email, data.password);
       const idToken = await userCred.user.getIdToken();
   
-      // obtener profile
+      // obtain profile
       const res = await fetch('http://localhost:3001/users/me', {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${idToken}`,
         },
         body: JSON.stringify({ email: data.email, password: data.password }),
